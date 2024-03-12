@@ -32,10 +32,11 @@ struct DashboardView: View {
             .padding()
             
             TabView {
-                ForEach(0..<2) { index in
-                    RunStatisticCarouselItem()
-                        .padding()
-                }
+                RunStatisticCarouselItem()
+                    .padding()
+                
+                FillFormCarouselItem()
+                    .padding()
             }
             .tabViewStyle(.page)
             .frame(height: 550)
