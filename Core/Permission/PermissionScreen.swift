@@ -20,15 +20,16 @@ struct PermissionScreen: View {
                     .fontWeight(.semibold)
                     .textCase(.uppercase)
                     .multilineTextAlignment(.center)
-                    .padding(.bottom, 24)
+                    .padding()
                 
                 PermissionItem(permissionTitle: "Location access", permissionDesc: "Run Behavior is an app to record your run behavior including tracking your path while running.", isGranted: $isLocationGranted)
-                    .padding(.bottom)
+                    .padding(.horizontal)
                     .onTapGesture {
                         isLocationGranted.toggle()
                     }
                 
                 PermissionItem(permissionTitle: "Notification access", permissionDesc: "Get notified to keep your running shape by enabling the notification access.", isGranted: $isNotificationGranted)
+                    .padding(.horizontal)
                     .onTapGesture {
                         isNotificationGranted.toggle()
                     }
@@ -43,7 +44,7 @@ struct PermissionScreen: View {
                             .background(Color.green)
                             .clipShape(RoundedRectangle(cornerRadius: 10))
                     }
-                    .padding(.top)
+                    .padding()
                 } else {
                     Button {
                         
@@ -55,12 +56,12 @@ struct PermissionScreen: View {
                             .clipShape(RoundedRectangle(cornerRadius: 10))
                     }
                     .disabled(true)
-                    .padding(.top)
+                    .padding()
                 }
             }
-            .padding()
             .background(Color.lightBlack)
             .clipShape(RoundedRectangle(cornerRadius: 10))
+            .padding()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(.black)
