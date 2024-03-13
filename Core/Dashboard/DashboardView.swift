@@ -15,7 +15,7 @@ struct RouteDestination {
 
 struct DashboardView: View {
     @State private var navigationPath = NavigationPath()
-    @State private var isPermissionGranted = true
+    @State private var isPermissionGranted = false
     @State private var showForm = false
     
     var body: some View {
