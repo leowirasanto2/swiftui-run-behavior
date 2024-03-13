@@ -15,6 +15,7 @@ struct RouteDestination {
 
 struct DashboardView: View {
     @State private var navigationPath = NavigationPath()
+    @State private var isPermissionGranted = true
     
     var body: some View {
         NavigationStack(path: $navigationPath) {
@@ -52,7 +53,13 @@ struct DashboardView: View {
                 
                 Spacer()
                 
-                NavigationLink(destination: PermissionScreen()) {
+                NavigationLink {
+                    if isPermissionGranted {
+                        Text("granted")
+                    } else {
+                        PermissionScreen()
+                    }
+                } label: {
                     HStack(alignment: .bottom, spacing: 8) {
                         Image(systemName: "figure.run")
                             .foregroundStyle(.white)
