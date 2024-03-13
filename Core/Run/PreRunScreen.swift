@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct PreRunScreen: View {
+    @Binding var path: [RouteDestination]
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
@@ -17,8 +18,9 @@ struct PreRunScreen: View {
                 .foregroundStyle(.white)
                 .fontWeight(.semibold)
             
+            
             NavigationLink {
-                RunScreen()
+                RunScreen(path: $path)
             } label: {
                 Text("GO!")
                     .font(.largeTitle)
@@ -52,5 +54,5 @@ struct PreRunScreen: View {
 }
 
 #Preview {
-    PreRunScreen()
+    PreRunScreen(path: .constant([]))
 }

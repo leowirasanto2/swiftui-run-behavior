@@ -9,6 +9,7 @@ import SwiftUI
 import MapKit
 
 struct RunScreen: View {
+    @Binding var path: [RouteDestination]
     @State var region = MKCoordinateRegion(
         center: .init(latitude: 37.334_900,longitude: -122.009_020),
         span: .init(latitudeDelta: 0.2, longitudeDelta: 0.2)
@@ -26,6 +27,7 @@ struct RunScreen: View {
             }
             .frame(width: .infinity, height: .infinity)
         }
+        .navigationBarBackButtonHidden(true)
         .overlay {
             VStack {
                 Spacer()
@@ -39,5 +41,5 @@ struct RunScreen: View {
 }
 
 #Preview {
-    RunScreen()
+    RunScreen(path: .constant([]))
 }
