@@ -95,6 +95,7 @@ struct InputFormScreen: View {
                     selectedForm = .date
                 }
             }
+            .padding(.horizontal)
             
             // Distance
             
@@ -121,6 +122,7 @@ struct InputFormScreen: View {
                     CollapsedFormItem(title: "Distance", description: "Add distance")
                 }
             }
+            .padding(.horizontal)
             .onTapGesture {
                 withAnimation(.snappy) {
                     selectedForm = .distance
