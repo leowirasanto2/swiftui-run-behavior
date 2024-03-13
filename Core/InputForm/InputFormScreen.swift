@@ -19,7 +19,7 @@ struct InputFormScreen: View {
     @State private var distance = 0.0
     @State private var showSuccessScreen = false
     @State private var isFormEdited = false
-    @Binding var show: Bool
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         VStack(spacing: 16) {
@@ -27,7 +27,7 @@ struct InputFormScreen: View {
             // Close button
             Button {
                 withAnimation(.snappy) {
-                    show.toggle()
+                    dismiss()
                 }
             } label: {
                 Image(systemName: "xmark.circle")
@@ -157,7 +157,7 @@ struct InputFormScreen: View {
                 SuccessInputFormScreen()
                     .task {
                         try? await Task.sleep(nanoseconds: 2_000_000_000)
-                        show = false
+                        dismiss()
                     }
             }
         }
@@ -173,5 +173,5 @@ struct InputFormScreen: View {
 }
 
 #Preview {
-    InputFormScreen(show: .constant(true))
+    InputFormScreen()
 }
