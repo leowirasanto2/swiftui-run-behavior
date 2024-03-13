@@ -18,6 +18,7 @@ struct InputFormScreen: View {
     @State private var end = Date()
     @State private var distance = 0.0
     @State private var showSuccessScreen = false
+    @State private var isFormEdited = false
     @Binding var show: Bool
     
     var body: some View {
@@ -51,9 +52,13 @@ struct InputFormScreen: View {
                                     if newValue > end {
                                         end = newValue
                                     }
+                                    isFormEdited = true
                                 }
                             Divider()
                             DatePicker("Stop time", selection: $end, displayedComponents: [.date, .hourAndMinute])
+                                .onChange(of: end) { oldValue, newValue in
+                                    isFormEdited = true
+                                }
                         }
                         .font(.subheadline)
                         .fontWeight(.semibold)
@@ -103,10 +108,10 @@ struct InputFormScreen: View {
                         Stepper {
                             Text("\(distance, specifier: "%.2f") kilometers")
                         } onIncrement: {
-                            distance += 1
+                            distance += 0.25
                         } onDecrement: {
                             guard distance > 0 else { return }
-                            distance -= 1
+                            distance -= 0.25
                         }
                     }
                     .padding()
@@ -125,6 +130,7 @@ struct InputFormScreen: View {
             // Save button
             
             Button {
+                guard isReadyToSave() else { return }
                 showSuccessScreen.toggle()
             } label: {
                 HStack(alignment: .bottom, spacing: 8) {
@@ -138,7 +144,7 @@ struct InputFormScreen: View {
                         .fontWeight(.semibold)
                 }
                 .padding()
-                .background(Color.green)
+                .background(isReadyToSave() ? Color.green : Color.gray)
                 .clipShape(RoundedRectangle(cornerRadius: 10))
             }
         }
@@ -157,6 +163,10 @@ struct InputFormScreen: View {
     
     func isDateInvalid() -> Bool {
         start > end
+    }
+    
+    func isReadyToSave() -> Bool {
+        !isDateInvalid() && isFormEdited
     }
 }
 
