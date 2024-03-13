@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct PreRunScreen: View {
+    @Environment(\.dismiss) var dismiss
+    
     var body: some View {
         VStack(alignment: .center, spacing: 100) {
             Text("Ready to run?")
@@ -15,8 +17,8 @@ struct PreRunScreen: View {
                 .foregroundStyle(.white)
                 .fontWeight(.semibold)
             
-            Button {
-                
+            NavigationLink {
+                RunScreen()
             } label: {
                 Text("GO!")
                     .font(.largeTitle)
@@ -35,7 +37,7 @@ struct PreRunScreen: View {
             }
             
             Button {
-                
+                dismiss()
             } label: {
                 Text("Change plan")
                     .font(.headline)
@@ -43,6 +45,7 @@ struct PreRunScreen: View {
                     .foregroundStyle(.red)
             }
         }
+        .navigationBarBackButtonHidden(true)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(.black)
     }
