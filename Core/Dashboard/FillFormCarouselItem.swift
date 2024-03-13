@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct FillFormCarouselItem: View {
+    var fillFormButtonTapGesture: () -> Void
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             Text("Did you forget to record your last run?")
@@ -24,9 +26,7 @@ struct FillFormCarouselItem: View {
                 .blur(radius: 5)
                 .frame(height: 250)
                 .overlay {
-                    Button {
-                        
-                    } label: {
+                    Button(action: fillFormButtonTapGesture) {
                         Text("Tap to fill the form!")
                             .font(.headline)
                             .foregroundStyle(.white)
@@ -35,7 +35,7 @@ struct FillFormCarouselItem: View {
                             .clipShape(RoundedRectangle(cornerRadius: 10))
                     }
                 }
-
+            
         }
         .padding()
         .background(Color.skeletonWhite)
@@ -44,5 +44,5 @@ struct FillFormCarouselItem: View {
 }
 
 #Preview {
-    FillFormCarouselItem()
+    FillFormCarouselItem(fillFormButtonTapGesture: {})
 }
