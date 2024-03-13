@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct PermissionScreen: View {
-    @State var isLocationGranted = false
-    @State var isNotificationGranted = false
+    @State private var isLocationGranted = false
+    @State private var isNotificationGranted = false
+    @Environment(\.dismiss) private var dismiss
+    var onAllPermissionsGranted: () -> ()
     
     var body: some View {
         VStack(alignment: .center) {
@@ -36,7 +38,7 @@ struct PermissionScreen: View {
                 
                 if isLocationGranted && isNotificationGranted {
                     Button {
-                        
+                        onAllPermissionsGranted()
                     } label: {
                         Text("Continue")
                             .foregroundStyle(.white)
@@ -47,7 +49,6 @@ struct PermissionScreen: View {
                     .padding()
                 } else {
                     Button {
-                        
                     } label: {
                         Text("Continue")
                             .foregroundStyle(.white)
@@ -69,5 +70,6 @@ struct PermissionScreen: View {
 }
 
 #Preview {
-    PermissionScreen()
+    PermissionScreen {
+    }
 }

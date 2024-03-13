@@ -83,9 +83,12 @@ struct DashboardView: View {
                 case .formScreen:
                     InputFormScreen()
                 case .permissionScreen:
-                    PermissionScreen()
-                default:
-                    Text("unknown")
+                    PermissionScreen {
+                        isPermissionGranted = true
+                        path = [.runScreen]
+                    }
+                case .runScreen:
+                    Text("pre run screen here")
                 }
             }
         }
