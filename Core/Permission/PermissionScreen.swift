@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct PermissionScreen: View {
+    @Binding var path: [RouteDestination]
     @State private var isLocationGranted = false
     @State private var isNotificationGranted = false
     @Environment(\.dismiss) private var dismiss
@@ -39,6 +40,7 @@ struct PermissionScreen: View {
                 if isLocationGranted && isNotificationGranted {
                     Button {
                         onAllPermissionsGranted()
+                        path = [RouteDestination.preRunScreen]
                     } label: {
                         Text("Continue")
                             .foregroundStyle(.white)
@@ -70,6 +72,6 @@ struct PermissionScreen: View {
 }
 
 #Preview {
-    PermissionScreen {
+    PermissionScreen(path: .constant([])) {
     }
 }

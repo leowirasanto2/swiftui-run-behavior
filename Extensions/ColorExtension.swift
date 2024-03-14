@@ -13,7 +13,7 @@ extension Color {
     }
     
     public static var lightBlack: Color {
-        return Color(hue: 1.0, saturation: 0.012, brightness: 0.315)
+        return Color(hue: 1.0, saturation: 0.0, brightness: 0.205)
     }
 }
 

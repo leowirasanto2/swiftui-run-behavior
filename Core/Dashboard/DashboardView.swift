@@ -10,6 +10,7 @@ import SwiftUI
 enum RouteDestination: Int {
     case permissionScreen
     case runScreen
+    case preRunScreen
     case formScreen
 }
 
@@ -57,7 +58,7 @@ struct DashboardView: View {
                 
                 Button {
                     if isPermissionGranted {
-                        path = [RouteDestination.runScreen]
+                        path = [RouteDestination.preRunScreen]
                     } else {
                         path = [RouteDestination.permissionScreen]
                     }
@@ -83,12 +84,13 @@ struct DashboardView: View {
                 case .formScreen:
                     InputFormScreen()
                 case .permissionScreen:
-                    PermissionScreen {
+                    PermissionScreen(path: $path) {
                         isPermissionGranted = true
-                        path = [.runScreen]
                     }
+                case .preRunScreen:
+                    PreRunScreen(path: $path)
                 case .runScreen:
-                    Text("pre run screen here")
+                    RunScreen(path: $path)
                 }
             }
         }
