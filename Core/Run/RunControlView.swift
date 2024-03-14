@@ -8,7 +8,10 @@
 import SwiftUI
 
 struct RunControlView: View {
-    @State var isMinimized: Bool = false
+    @State private var isMinimized: Bool = false
+    @State private var isPaused = false
+    @ObservedObject var stopwatchHelper = StopwatchModelHelper()
+    var onEnded: (StopWatchResult) -> ()
     
     var body: some View {
         VStack {
@@ -36,7 +39,7 @@ struct RunControlView: View {
                         Text("Duration")
                             .font(.headline)
                             .foregroundStyle(.white)
-                        Text("00:00:00")
+                        Text(stopwatchHelper.formattedElapsedTime())
                             .font(.largeTitle)
                             .foregroundStyle(.white)
                             .fontWeight(.semibold)
@@ -50,7 +53,7 @@ struct RunControlView: View {
                         Text("Duration")
                             .font(.headline)
                             .foregroundStyle(.white)
-                        Text("00:00:00")
+                        Text(stopwatchHelper.formattedElapsedTime())
                             .font(.largeTitle)
                             .foregroundStyle(.white)
                             .fontWeight(.semibold)
@@ -92,18 +95,25 @@ struct RunControlView: View {
                         Spacer()
                         
                         Button {
-                            
+                            if isPaused {
+                                stopwatchHelper.startOrResume()
+                            } else {
+                                stopwatchHelper.pause()
+                            }
+                            isPaused.toggle()
                         } label: {
-                            Text("Pause")
+                            Text(isPaused ? "Resume" : "Pause")
                                 .fontWeight(.semibold)
                                 .foregroundStyle(.white)
                                 .padding()
-                                .background(.gray)
+                                .background(isPaused ? .orange : .gray)
                         }
                         .clipShape(RoundedRectangle(cornerRadius: 10))
                         
                         Button {
-                            
+                            stopwatchHelper.stop { result in
+                                onEnded(result)
+                            }
                         } label: {
                             Text("Stop")
                                 .fontWeight(.semibold)
@@ -137,5 +147,5 @@ struct RunControlView: View {
 }
 
 #Preview {
-    RunControlView()
+    RunControlView { result in }
 }

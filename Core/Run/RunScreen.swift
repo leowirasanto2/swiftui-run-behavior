@@ -14,7 +14,6 @@ struct RunScreen: View {
         center: .init(latitude: 37.334_900,longitude: -122.009_020),
         span: .init(latitudeDelta: 0.2, longitudeDelta: 0.2)
     )
-    
     @State var currentPosition: CLLocationCoordinate2D = .init(latitude: -8.650000, longitude: 115.216667)
     
     var body: some View {
@@ -25,14 +24,28 @@ struct RunScreen: View {
                 }
                 .tint(.green)
             }
-            .frame(width: .infinity, height: .infinity)
         }
         .navigationBarBackButtonHidden(true)
         .overlay {
-            VStack {
+            VStack(alignment: .leading) {
                 Spacer()
                 
-                RunControlView()
+                Button {
+                    path.removeAll()
+                } label: {
+                    Image(systemName: "xmark")
+                        .resizable()
+                        .frame(width: 15, height: 15)
+                        .padding()
+                }
+                .foregroundStyle(.white)
+                .background(.black)
+                .clipShape(Circle())
+                .padding(.leading)
+                
+                RunControlView(onEnded: { result in
+                    print(result)
+                })
                 .padding()
                 .background(.white.opacity(0))
             }
