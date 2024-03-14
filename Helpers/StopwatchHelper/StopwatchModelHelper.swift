@@ -30,7 +30,6 @@ class StopwatchModelHelper: ObservableObject {
         timer?.invalidate()
         timer = nil
         onsTop?(StopWatchResult(elapsedTime: elapsedTime))
-        elapsedTime = 0
     }
     
     func formattedElapsedTime() -> String {
@@ -46,10 +45,12 @@ struct StopWatchResult {
     var minutes: Int
     var seconds: Int
     var millis: Int
+    var formatted: String
     
     init(elapsedTime: TimeInterval) {
         self.minutes = Int(elapsedTime) / 60 % 60
         self.seconds = Int(elapsedTime) % 60
         self.millis = Int(elapsedTime * 100) % 100
+        self.formatted = String(format: "%02d:%02d:%02d", minutes, seconds, millis)
     }
 }

@@ -43,12 +43,15 @@ struct RunScreen: View {
                 .clipShape(Circle())
                 .padding(.leading)
                 
-                RunControlView(onEnded: { result in
+                RunControlView { result in
                     print(result)
-                })
+                } onDone: {
+                    path.removeAll()
+                }
                 .padding()
                 .background(.white.opacity(0))
             }
+            .shadow(radius: 5)
         }
     }
 }

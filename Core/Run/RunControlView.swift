@@ -10,8 +10,10 @@ import SwiftUI
 struct RunControlView: View {
     @State private var isMinimized: Bool = false
     @State private var isPaused = false
+    @State private var isFinished = false
     @ObservedObject var stopwatchHelper = StopwatchModelHelper()
     var onEnded: (StopWatchResult) -> ()
+    var onDone: () -> ()
     
     var body: some View {
         VStack {
@@ -31,6 +33,16 @@ struct RunControlView: View {
                             .resizable()
                             .frame(width: 30, height: 14)
                             .foregroundStyle(.white)
+                    }
+                }
+                
+                if isFinished {
+                    HStack {
+                        Text("Your Result")
+                            .font(.title)
+                            .fontWeight(.bold)
+                            .foregroundStyle(.white)
+                        Spacer()
                     }
                 }
                 
@@ -94,50 +106,67 @@ struct RunControlView: View {
                     HStack {
                         Spacer()
                         
-                        Button {
-                            if isPaused {
-                                stopwatchHelper.startOrResume()
-                            } else {
-                                stopwatchHelper.pause()
+                        if isFinished {
+                            Button {
+                                onDone()
+                            } label: {
+                                Text("Done")
+                                    .fontWeight(.semibold)
+                                    .foregroundStyle(.white)
+                                    .padding()
+                                    .background(.green)
                             }
-                            isPaused.toggle()
-                        } label: {
-                            Text(isPaused ? "Resume" : "Pause")
-                                .fontWeight(.semibold)
-                                .foregroundStyle(.white)
-                                .padding()
-                                .background(isPaused ? .orange : .gray)
-                        }
-                        .clipShape(RoundedRectangle(cornerRadius: 10))
-                        
-                        Button {
-                            stopwatchHelper.stop { result in
-                                onEnded(result)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                        } else {
+                            Button {
+                                if isPaused {
+                                    stopwatchHelper.startOrResume()
+                                } else {
+                                    stopwatchHelper.pause()
+                                }
+                                isPaused.toggle()
+                            } label: {
+                                Text(isPaused ? "Resume" : "Pause")
+                                    .fontWeight(.semibold)
+                                    .foregroundStyle(.white)
+                                    .padding()
+                                    .background(isPaused ? .orange : .gray)
                             }
-                        } label: {
-                            Text("Stop")
-                                .fontWeight(.semibold)
-                                .foregroundStyle(.white)
-                                .padding()
-                                .background(.red)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                            
+                            Button {
+                                stopwatchHelper.stop { result in
+                                    withAnimation {
+                                        isFinished.toggle()
+                                        isMinimized = true
+                                        onEnded(result)
+                                    }
+                                }
+                            } label: {
+                                Text("Stop")
+                                    .fontWeight(.semibold)
+                                    .foregroundStyle(.white)
+                                    .padding()
+                                    .background(.red)
+                            }
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
                         }
-                        .clipShape(RoundedRectangle(cornerRadius: 10))
                     }
                 }
             }
             .gesture(
-            DragGesture()
-                .onEnded { offset in
-                    withAnimation(.snappy) {
-                        switch(offset.translation.width, offset.translation.height) {
-                        case (-100...100, ...0):
-                            isMinimized = false
-                        case (-100...100, 0...):
-                            isMinimized = true
-                        default: break
+                DragGesture()
+                    .onEnded { offset in
+                        withAnimation(.snappy) {
+                            switch(offset.translation.width, offset.translation.height) {
+                            case (-100...100, ...0):
+                                isMinimized = false
+                            case (-100...100, 0...):
+                                isMinimized = true
+                            default: break
+                            }
                         }
                     }
-                }
             )
             .padding()
             .background(.black)
@@ -147,5 +176,5 @@ struct RunControlView: View {
 }
 
 #Preview {
-    RunControlView { result in }
+    RunControlView(onEnded: { _ in }, onDone: {})
 }
